@@ -1,3 +1,11 @@
+Ubantu machine , t2.medium 4gb
+DNS url you will get when you are configure two server are you configure
+go to security inbound rule
+1.9092, 2181
+after that all DNS URL Paste your application like this ec2-34-226-248-251.compute-1.amazonaws.com
+
+
+
 ✅ 1. Install Java (OpenJDK 17)
 
 sudo apt update
