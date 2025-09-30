@@ -51,6 +51,9 @@ then add
 listeners=PLAINTEXT://0.0.0.0:9092
 advertised.listeners=PLAINTEXT://ec2-13-232-203-118.ap-south-1.compute.amazonaws.com:9092
 
+after that start kafka server using command is cd /opt/kafka
+bin/kafka-server-start.sh config/server.properties
+
 
 AWS Security Group
 Make sure your EC2 instance's security group:
