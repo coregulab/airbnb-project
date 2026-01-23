@@ -49,7 +49,9 @@ public class PropertyService {
 	private EmailProducer emailProducer;
 	@Autowired
 	private RoomAvailabilityRepository availabilityRepository;
-	
+
+	@Autowired
+	private PropertyPhotosRepository photosRepository;
 	
 	@Autowired
 	private S3Service s3Service;
@@ -88,7 +90,16 @@ public class PropertyService {
 	    List<String> fileUrls = s3Service.uploadFiles(files);
 
 	    // Optionally store file URLs in database or DTO
-	    dto.setImageUrls(fileUrls); // Ensure PropertyDto has `List<String> imageUrls;`
+	   // dto.setImageUrls(fileUrls); // Ensure PropertyDto has `List<String> imageUrls;`
+
+		// Upload files to S3
+	    List<String> fileUrls = s3Service.uploadFiles(files);
+	    for(String url: fileUrls) {
+	    	PropertyPhotos photo = new PropertyPhotos();
+	    	photo.setUrl(url);
+	    	photo.setProperty(savedProperty);
+	    	photosRepository.save(photo);
+	    }
 	    
 	    emailProducer.sendEmail(new EmailRequest(
 	    	    "pankaj.p.mutha14@gmail.com",
