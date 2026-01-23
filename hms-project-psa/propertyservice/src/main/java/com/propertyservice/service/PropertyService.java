@@ -51,6 +51,9 @@ public class PropertyService {
 	private RoomAvailabilityRepository availabilityRepository;
 
 	@Autowired
+	private KafkaTemplate<String, EmailRequest> kafkaTemplate;
+
+	@Autowired
 	private PropertyPhotosRepository photosRepository;
 	
 	@Autowired
@@ -85,6 +88,9 @@ public class PropertyService {
 	        rooms.setBasePrice(roomsDto.getBasePrice());
 	        roomRepository.save(rooms);
 	    }
+		EmailRequest request = new EmailRequest("pankaj.p.mutha14@gmail.com","Property added!",  "Your property has been successfully added."));
+		
+		kafkaTemplate.send(AppConstants.TOPIC,request);
 
 	    // Upload files to S3
 	    List<String> fileUrls = s3Service.uploadFiles(files);
