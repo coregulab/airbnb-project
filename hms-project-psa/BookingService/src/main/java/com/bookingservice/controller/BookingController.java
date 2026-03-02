@@ -29,6 +29,9 @@ public class BookingController {
 	private PropertyClient propertyClient;
 	
 	@Autowired
+	private PaymentClient paymentClient;
+	
+	@Autowired
 	private BookingRepository bookingRepository;
 	
 	@Autowired
@@ -90,5 +93,21 @@ public class BookingController {
 		
 		return null;
 	}
-
+	@PostMapping("/proceed-payment")
+	public APIResponse<StripeResponse> proceedPayment(@RequestBody ProductRequest productRequest)) {
+		StripeResponse stripeResponse = paymentClient.checkoutProducts(productRequest);
+		return stripeResponse;
 }
+	@PutMapping("/update-status-booking")
+	public boolean updateBooking(@RequestParam long id){
+		Optional<Bookings> opBooking = bookingRepository.findById(id);
+		if(opBooking.isPresent() ) {
+			Bookings bookings = opBookings.get();
+			bookings.setStatus("confirmed");
+			Bookings savedBooking = bookingRepository.save(bookings);
+			if(savedBooking!=null) {
+				return true;
+			}
+		}
+		return false;
+			
